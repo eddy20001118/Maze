@@ -18,7 +18,6 @@ public class MazeData {
     private int enteranceX =0,enteranceY = 0;
     private int exitX = 9,exitY = 1;
     private char[][] maze;
-
     public MazeData(String filename){
         if(filename == null){
             throw new IllegalArgumentException("文件名不能为空");
