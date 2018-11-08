@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 
 public class AlgoFrame extends Application {
 
-    public static String title = "Test";
+    public static String title = "Maze Solver";
     public static String filename = "map.in";
     public static MazeData data = new MazeData(filename);
     public static GridPane pane = new GridPane();
