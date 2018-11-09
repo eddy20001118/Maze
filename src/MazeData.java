@@ -10,23 +10,22 @@ public class MazeData {
     public static final char BlueBlock = 'B';
     public static final char StartPoint = 'S';
     public boolean[][] visited;
-    public boolean[][] pathLeft;
-    public boolean[][] pathRight;
-    public static int BlueBlockNumbers; //初始蓝色方块的数量
-    public static int[] BlueScore = {1000,1000,1000,1000,1000,1000,1000,1000};
-    private int row,col; //行(N)，列(M)
-    private int enteranceX =0,enteranceY = 0;
-    private int exitX = 9,exitY = 1;
+    private int BlueBlockNumbers; //初始蓝色方块的数量
+    private int[] BlueScore = {1000, 100, 100, 100, 100, 100, 100, 1000};
+    private int row, col; //行(N)，列(M)
+    private int enteranceX = 0, enteranceY = 0;
+    private int exitX = 9, exitY = 1;
     private char[][] maze;
-    public MazeData(String filename){
-        if(filename == null){
+
+    public MazeData(String filename) {
+        if (filename == null) {
             throw new IllegalArgumentException("文件名不能为空");
         }
         Scanner scanner = null;
         try {
             File file = new File(filename);
-            if(!file.exists()){
-                throw  new IllegalArgumentException("文件不存在");
+            if (!file.exists()) {
+                throw new IllegalArgumentException("文件不存在");
             }
             FileInputStream fis = new FileInputStream(file);
             scanner = new Scanner(new BufferedInputStream(fis), "UTF-8");
@@ -39,20 +38,16 @@ public class MazeData {
 
             maze = new char[row][col];
             visited = new boolean[row][col];
-            pathLeft = new boolean[row][col];
-            pathRight = new boolean[row][col];
             //读取后续的row行
-            for(int i=0; i<row; i++){
+            for (int i = 0; i < row; i++) {
                 String line = scanner.nextLine();
-                if(line.length() != col){
-                    throw new IllegalArgumentException("地图文件第"+row+"行有误");
+                if (line.length() != col) {
+                    throw new IllegalArgumentException("地图文件第" + row + "行有误");
                 }
-                for(int j=0; j<col; j++){
+                for (int j = 0; j < col; j++) {
                     maze[i][j] = line.charAt(j);
                     visited[i][j] = false;
-                    pathLeft[i][j] = false;
-                    pathRight[i][j] = false;
-                    if(maze[i][j] == 'B'){
+                    if (maze[i][j] == 'B') {
                         BlueBlockNumbers++;
                     }
                 }
@@ -62,69 +57,85 @@ public class MazeData {
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if(scanner != null){
+            if (scanner != null) {
                 scanner.close();
             }
         }
     }
 
-    public int GetRow(){ return row; }
+    public int getBlockNumbers() {
+        return BlueBlockNumbers;
+    }
 
-    public int GetCol(){ return col; }
+    public int[] getBlueScore() {
+        return BlueScore;
+    }
 
-    public int getEnteranceX() { return enteranceX; }
+    public int GetRow() {
+        return row;
+    }
 
-    public int getEnteranceY() { return enteranceY; }
+    public int GetCol() {
+        return col;
+    }
 
-    public int getExitX() { return exitX; }
+    public int getEnteranceX() {
+        return enteranceX;
+    }
 
-    public int getExitY() { return exitY; }
+    public int getEnteranceY() {
+        return enteranceY;
+    }
 
-    public void setEnterancePoint(int x, int y){
+    public int getExitX() {
+        return exitX;
+    }
+
+    public int getExitY() {
+        return exitY;
+    }
+
+    public void setEnterancePoint(int x, int y) {
         this.enteranceX = x;
         this.enteranceY = y;
     }
 
-    public void setExitPoint(int x, int y){
+    public void setExitPoint(int x, int y) {
         this.exitX = x;
         this.exitY = y;
         maze[x][y] = '0';
     }
 
-    public void setMaze(int x, int y, char value){
+    public void setMaze(int x, int y, char value) {
         maze[x][y] = value;
     }
 
-    public char getMaze(int x, int y){
-        if(!inArea(x, y)){
+    public char getMaze(int x, int y) {
+        if (!inArea(x, y)) {
             throw new IllegalArgumentException("传入坐标不在范围内");
         }
         return maze[x][y]; //返回迷宫里的点
     }
 
-    public boolean inArea(int x, int y){
+    public boolean inArea(int x, int y) {
         return x >= 0 && x < row && y >= 0 && y < col;
     }
 
-    public void test(){
-        System.out.println(row+"行"+col+"列");
-        for (int i=0; i<row; i++){
-            for(int j=0; j<col; j++){
+    public void test() {
+        System.out.println(row + "行" + col + "列");
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
                 System.out.print(maze[i][j]);
             }
             System.out.println();
         }
     }
 
-    public void reset(){
-        for(int i=0; i<GetRow(); i++){
-            for(int j=0; j<GetCol(); j++){
+    public void reset() {
+        for (int i = 0; i < GetRow(); i++) {
+            for (int j = 0; j < GetCol(); j++) {
                 visited[i][j] = false;
             }
         }
-    }
-
-    public static int getBlueBlockNumbers() {
-        return BlueBlockNumbers;
     }
 }

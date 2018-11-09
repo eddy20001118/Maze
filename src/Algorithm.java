@@ -6,38 +6,113 @@ import java.util.LinkedList;
 public class Algorithm {
     public static MazeData data = AlgoFrame.data;
     public static GridPane pane = AlgoFrame.pane;
-
-    public static enum Side {Left, Right}
-    public static enum Player {RED, BLUE}
-
-    private int REDScore = 0;
-    private int BLUEScore = 0;
-    private int ClickCount = 0;
-    public LinkedList<Integer> ScoreQuene = new LinkedList<Integer>();
-    private BlueBlock[] blueBlock = new BlueBlock[MazeData.getBlueBlockNumbers()];
-    private static final int direction[][] = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}}; //9点钟方向逆时针
     private int runMethodCount = 0;
-    private BlueBlock leftBlock, rightBlock;
+    public static enum Side {Left, Right, NotEndPoint}
+    public static enum Player {RED, BLUE}
+    public BlueBlock[] blueBlock = new BlueBlock[data.getBlockNumbers()];
+    public BlueBlock leftBlock, rightBlock;
+    public boolean[][] curPath = new boolean[data.GetRow()][data.GetCol()];
+    public int REDScore = 0,BlueScore = 0;
+    private cal play;
+    private static final int direction[][] = {{0, -1}, {-1, 0}, {0, 1}, {1, 0}}; //9点钟方向逆时针
 
     public Algorithm() {
-        initBlueBlock(true);
+        initBlueBlock();
         leftBlock = blueBlock[0];
-        rightBlock = blueBlock[MazeData.getBlueBlockNumbers() - 1];
+        rightBlock = blueBlock[data.getBlockNumbers() - 1];
+
+    }
+
+    public void run(){
+        if(runMethodCount < data.getBlockNumbers()) {
+            Player player;
+            if (runMethodCount % 2 == 0) {
+                player = Player.RED;
+            } else {
+                player = Player.BLUE;
+            }
+            play = new cal(player, leftBlock, rightBlock);
+            play.clearPath(curPath);
+            play.runNext();
+            curPath = play.getPath();
+
+            if (player == Player.RED) {
+                REDScore += play.getScore();
+                System.out.println(REDScore);
+            } else {
+                BlueScore += play.getScore();
+                System.out.println(BlueScore);
+            }
+
+            if (play.getSide() == Side.Left) {
+                leftBlock.cancelCurrentBlock(player);
+                setBlueBlock(leftBlock.getX() + 1, leftBlock.getY(), leftBlock.getScore()); //刷新方块的分数
+                leftBlock = leftBlock.nextBlock(Side.Left);
+            } else if (play.getSide() == Side.Right) {
+                rightBlock.cancelCurrentBlock(player);
+                setBlueBlock(rightBlock.getX() + 1, rightBlock.getY(), rightBlock.getScore()); //刷新方块的分数
+                rightBlock = rightBlock.nextBlock(Side.Right);
+            }
+            runMethodCount++;
+        }
+    }
+
+    public int getREDScore(){
+        return REDScore;
+    }
+
+    public int getBLUEScore(){
+        return BlueScore;
+    }
+
+    public void initBlueBlock() {
+        int count = 0; //记录蓝色方块在分数数组中的位置
+        for (int i = 0; i < data.GetRow(); i++) {
+            for (int j = 0; j < data.GetCol(); j++) {
+                if (data.getMaze(i, j) == 'B') {
+                    blueBlock[count] = new BlueBlock(i, j, BlueBlock.BlueScore[count], count);
+                    setBlueBlock(i+1, j, blueBlock[count].getScore()); //刷新初始时各方块的分数
+                    count++;
+                }
+            }
+        }
+    }
+
+    public void setBlueBlock(int x, int y, int score) { //刷新蓝色方块得分
+        pane.add(AlgoVisHelper.setText(score), y, x);
     }
 
     private class cal {
-        int score = 0;
+        int leftScore = 0, rightScore = 0;
+        boolean[][] pathLeft = new boolean[data.GetRow()][data.GetCol()];
+        boolean[][] pathRight = new boolean[data.GetRow()][data.GetCol()];
+        BlueBlock exitLeft,exitRight;
+        Player curPlayer;
 
-        private int calculate(BlueBlock exit, Side side) {
+        cal(Player curPlayer, BlueBlock exitLeft, BlueBlock exitRight) {
+            this.curPlayer = curPlayer;
+            this.exitLeft = exitLeft;
+            this.exitRight = exitRight;
+        }
+
+        private void runNext(){
+            leftScore = exitLeft.getScore() - calculate(Side.Left,exitLeft);
+            rightScore = exitRight.getScore() - calculate(Side.Right,exitRight);
+            drawPath();
+        }
+
+        private int calculate(Side side, BlueBlock exit) {
+            int endX, endY;
+            int score = 0;
+            endX = exit.prevBlock(side).getX();
+            endY = exit.prevBlock(side).getY();
             LinkedList<Position> queue = new LinkedList<Position>();
             Position entrance = new Position(data.getEnteranceX(), data.getEnteranceY());
             queue.addLast(entrance); //由队尾加入队列
             data.visited[entrance.getX()][entrance.getY()] = true;
-            boolean isSolved = false;
             while (queue.size() != 0) {
                 Position curPos = queue.pop();  //获取并自动删除队列中的第一个元素
-                if (curPos.getX() == exit.prevBlock(side).getX() && curPos.getY() == exit.prevBlock(side).getY()) {
-                    isSolved = true;
+                if (curPos.getX() == endX && curPos.getY() == endY) {
                     score = findPath(curPos, side);
                     //System.out.println("Solve "+isSolved);
                     break;
@@ -58,112 +133,89 @@ public class Algorithm {
             data.reset();
             return score;
         }
-    }
 
-    public void setData(int x, int y) {
-        pane.add(AlgoVisHelper.drawRectangle(Color.YELLOW), y, x);
-    }
+        private int findPath(Position des, Side side) {
+            Position cur = des;
+            int count = 0;
+            while (cur != null) {
+                if (side == Side.Left) {
+                    pathLeft[cur.getX()][cur.getY()] = true; //代表左边路径
+                } else if (side == Side.Right) {
+                    pathRight[cur.getX()][cur.getY()] = true; //代表右边路径
+                }
+                cur = cur.getPrev();
+                count++;
+            }
+            return count;
+        }
 
-    public void setBlueBlock(int x, int y, int score) { //刷新蓝色方块得分
-        pane.add(AlgoVisHelper.setText(score), y, x);
-    }
+        private int getScore() {
+            return leftScore >= rightScore ? leftScore : rightScore;
+        }
 
-    public void run(boolean isClicked) {
-        if (BlueBlock.BlueBlockNumbers > 0 && isClicked) {
-            if (runNextBlock(leftBlock, rightBlock, Player.RED) == Side.Left) {
-                leftBlock = leftBlock.nextBlock(Side.Left);
+        private boolean[][] getPath(){
+            if(leftScore >= rightScore){
+                return pathLeft;
             } else {
-                rightBlock = rightBlock.nextBlock(Side.Right);
+                return pathRight;
             }
-            ClickCount++;
         }
 
-        if (ClickCount % 2 != 0) {
-            REDScore += ScoreQuene.pop();
-        } else {
-            BLUEScore += ScoreQuene.pop();
+        //返回计算出的最短路径是那一边的，也就是该路径的终点在哪一边
+        private Side getSide(){
+            if(leftScore >= rightScore){
+                return Side.Left;
+            } else {
+                return Side.Right;
+            }
         }
-        System.out.println("红方： " + REDScore + ", 蓝方： " + BLUEScore);
-        System.out.println("剩余蓝色方块数量" + BlueBlock.BlueBlockNumbers);
-    }
 
-    public Side runNextBlock(BlueBlock leftBlock, BlueBlock rightBlock, Player player) {
-        cal left = new cal();
-        cal right = new cal();
-        int CurScore = 0;
-        int leftScore = leftBlock.getScore() - left.calculate(leftBlock, Side.Left);
-        int rightScore = rightBlock.getScore() - right.calculate(rightBlock, Side.Right);
-        if (leftScore >= rightScore) {
-            drawMap(Side.Left);
-            leftBlock.cancelCurrentBlock();
-            setBlueBlock(leftBlock.getX()+1, leftBlock.getY(), leftBlock.getScore()); //取消当前蓝色方块后要在屏幕上刷新得分
-            CurScore += leftScore;
-            ScoreQuene.addLast(CurScore);
-            return Side.Left;
-        } else {
-            drawMap(Side.Right);
-            rightBlock.cancelCurrentBlock();
-            setBlueBlock(rightBlock.getX()+1, rightBlock.getY(), rightBlock.getScore()); //取消当前蓝色方块后要刷新得分
-            CurScore += rightScore;
-            ScoreQuene.addLast(CurScore);
-            return Side.Right;
+        public void setData(int x, int y, Color color) {
+            pane.add(AlgoVisHelper.drawRectangle(color), y, x);
         }
-    }
 
-    public void initBlueBlock(boolean initial) {
-        int count = 0; //记录蓝色方块在分数数组中的位置
-        for (int i = 0; i < data.GetRow(); i++) {
-            for (int j = 0; j < data.GetCol(); j++) {
-                if (data.getMaze(i, j) == 'B') {
-                    blueBlock[count] = new BlueBlock(i, j, BlueBlock.BlueScore[count], count);
-                    setBlueBlock(i+1, j, blueBlock[count].getScore());
-                    //System.out.println("方块" + (count + 1) + "分数是: " + blueBlock[count].getScore());
-                    count++;
+        private void drawPath() {
+            for (int i = 0; i < data.GetRow(); i++) {
+                for (int j = 0; j < data.GetCol(); j++) {
+                    if(data.getMaze(i,j) != MazeData.StartPoint){
+                        if(curPlayer == Player.RED && this.getSide() == Side.Left){
+                            if(pathLeft[i][j]){
+                                setData(i,j,Color.YELLOW);
+                            }
+                        } else if(curPlayer == Player.RED && this.getSide() == Side.Right){
+                            if(pathRight[i][j]){
+                                setData(i,j,Color.YELLOW);
+                            }
+                        } else if(curPlayer == Player.BLUE && this.getSide() == Side.Left){
+                            if(pathLeft[i][j]){
+                                setData(i,j,Color.FORESTGREEN);
+                            }
+                        } else if(curPlayer == Player.BLUE && this.getSide() == Side.Right){
+                            if(pathRight[i][j]){
+                                setData(i,j,Color.FORESTGREEN);
+                            }
+                        }
+                    }
+
                 }
             }
         }
-    }
 
-    public int getREDScore(){
-        return REDScore;
-    }
-
-    public int getBLUEScore(){
-        return BLUEScore;
-    }
-
-    private int findPath(Position des, Side side) {
-        Position cur = des;
-        int count = 0;
-        while (cur != null) {
-            if (side == Side.Left) {
-                data.pathLeft[cur.getX()][cur.getY()] = true; //1代表左边路径
-            } else if (side == Side.Right) {
-                data.pathRight[cur.getX()][cur.getY()] = true; //2代表右边路径
-            }
-            cur = cur.getPrev();
-            count++;
-        }
-        return count;
-    }
-
-    private void drawMap(Side side) {
-        for (int i = 0; i < data.GetRow(); i++) {
-            for (int j = 0; j < data.GetCol(); j++) {
-                if (side == Side.Left
-                        && data.pathLeft[i][j]
-                        && data.getMaze(i, j) != MazeData.StartPoint) {
-                    setData(i, j);
-                } else if (side == Side.Right
-                        && data.pathRight[i][j]
-                        && data.getMaze(i, j) != MazeData.StartPoint) {
-                    setData(i, j);
+        private void clearPath(boolean path[][]) {
+            for (int i = 0; i < data.GetRow(); i++) {
+                for (int j = 0; j < data.GetCol(); j++) {
+                    if(data.getMaze(i,j) != MazeData.StartPoint) {
+                        if (path[i][j]) {
+                            setData(i, j, Color.WHITE);
+                        }
+                        path[i][j] = false;
+                    }
                 }
-                data.pathLeft[i][j] = false;
-                data.pathRight[i][j] = false;
             }
+            setData(leftBlock.prevBlock(Side.Left).getX(), leftBlock.prevBlock(Side.Left).getY(), Color.WHITE);
+            setData(rightBlock.prevBlock(Side.Right).getX(), rightBlock.prevBlock(Side.Right).getY(), Color.WHITE);
         }
-    }
 
+    }
 }
 

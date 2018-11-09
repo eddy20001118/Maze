@@ -1,7 +1,5 @@
 import javafx.geometry.Pos;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
@@ -23,7 +21,7 @@ public class AlgoVisHelper {
         String text = Integer.toString(te);
         TextField tfMessage = new TextField(text);
         tfMessage.setStyle("-fx-text-fill: black");
-        tfMessage.setPrefSize(50,50);
+        tfMessage.setPrefSize(blockSide,blockSide/2);
         tfMessage.setAlignment(Pos.CENTER);
         tfMessage.setFont(Font.font("Times", 13));
         return tfMessage;
