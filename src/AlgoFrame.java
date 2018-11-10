@@ -1,3 +1,4 @@
+import com.jfoenix.controls.JFXButton;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -6,6 +7,7 @@ import javafx.geometry.Orientation;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.effect.Shadow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -20,23 +22,26 @@ public class AlgoFrame extends Application {
     public static MazeData data = new MazeData(filename);
     public static GridPane pane = new GridPane();
     public static BorderPane bp = new BorderPane();
-    public static SplitPane sp = new SplitPane();
+    public static VBox vb = new VBox();
     public Algorithm algorithm = new Algorithm();
     private Scene scene;
     private Paint color;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        double SceneWidth = (data.GetRow()) * AlgoVisHelper.blockSide;
-        double SceneHeight = (data.GetCol() + 2) * AlgoVisHelper.blockSide;
-        bp.setPadding(new Insets(0,0,0,0));
-        bp.setLeft(AlgoVisHelper.setText(0)); //刷新分数
-        bp.setRight(AlgoVisHelper.setText(0));
-        sp.getItems().addAll(pane,bp);
-        sp.setOrientation(Orientation.VERTICAL);
+        double SceneWidth =  data.GetRow() * (AlgoVisHelper.blockSide +1)-10;
+        double SceneHeight = data.GetCol() * (AlgoVisHelper.blockSide +1) + 85;
+        pane.setStyle("-fx-background-color: white;");
+        bp.setPadding(new Insets(10,5,10,5));
+        bp.setLeft(AlgoVisHelper.setScore(0)); //刷新分数
+        bp.setRight(AlgoVisHelper.setScore(0));
+        vb.getChildren().add(pane);
+        vb.getChildren().add(bp);
+        vb.setStyle("-fx-background-color: white;");
         CreateNodes();
         DrawMap();
-        scene = new Scene(sp, SceneWidth, SceneHeight);
+        scene = new Scene(vb,SceneWidth,SceneHeight);
+        scene.getStylesheets().add(getClass().getResource("res/components.css").toExternalForm());
         primaryStage.setTitle(title);
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -45,17 +50,18 @@ public class AlgoFrame extends Application {
     }
 
     public void CreateNodes() {
-        Button next = new Button("Next");
+        JFXButton next = new JFXButton("Go!");
         next.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 algorithm.run();
-                bp.setLeft(AlgoVisHelper.setText(algorithm.getREDScore())); //刷新分数
-                bp.setRight(AlgoVisHelper.setText(algorithm.getBLUEScore()));
+                bp.setLeft(AlgoVisHelper.setScore(algorithm.getREDScore())); //刷新分数
+                bp.setRight(AlgoVisHelper.setScore(algorithm.getBLUEScore()));
                 data.reset();
             }
         });
-        next.setPrefSize(50,25);
+        next.setPrefSize(80,AlgoVisHelper.blockSide);
+        next.getStyleClass().add("button-raised");
         bp.setCenter(next);
     }
 
@@ -63,13 +69,13 @@ public class AlgoFrame extends Application {
         for (int i = 0; i < data.GetRow(); i++) {
             for (int m = 0; m < data.GetCol(); m++) {
                 if (data.getMaze(i, m) == MazeData.WALL) {
-                    color = Color.ORANGE;
+                    color = AlgoVisHelper.orange;
                 } else if (data.getMaze(i, m) == MazeData.ROAD) {
-                    color = Color.WHITE;
+                    color = AlgoVisHelper.white;
                 } else if (data.getMaze(i, m) == MazeData.StartPoint) {
-                    color = Color.RED;
+                    color = AlgoVisHelper.red;
                 } else {
-                    color = Color.BLUE;
+                    color = AlgoVisHelper.blue;
                 }
                 pane.add(AlgoVisHelper.drawRectangle(color), m, i); //先列后行
             }

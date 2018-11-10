@@ -70,9 +70,9 @@ public class BlueBlock extends Position{
         //取消方块分数
         this.setScore(0);
         if(curPlayer == Algorithm.Player.RED){
-            pane.add(AlgoVisHelper.drawRectangle(Color.YELLOW),this.getY(),this.getX());
+            pane.add(AlgoVisHelper.drawRectangle(AlgoVisHelper.REDpath),this.getY(),this.getX());
         } else {
-            pane.add(AlgoVisHelper.drawRectangle(Color.FORESTGREEN),this.getY(),this.getX());
+            pane.add(AlgoVisHelper.drawRectangle(AlgoVisHelper.BLUEpath),this.getY(),this.getX());
         }
     }
 

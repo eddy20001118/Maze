@@ -180,19 +180,19 @@ public class Algorithm {
                     if(data.getMaze(i,j) != MazeData.StartPoint){
                         if(curPlayer == Player.RED && this.getSide() == Side.Left){
                             if(pathLeft[i][j]){
-                                setData(i,j,Color.YELLOW);
+                                setData(i,j,AlgoVisHelper.REDpath);
                             }
                         } else if(curPlayer == Player.RED && this.getSide() == Side.Right){
                             if(pathRight[i][j]){
-                                setData(i,j,Color.YELLOW);
+                                setData(i,j,AlgoVisHelper.REDpath);
                             }
                         } else if(curPlayer == Player.BLUE && this.getSide() == Side.Left){
                             if(pathLeft[i][j]){
-                                setData(i,j,Color.FORESTGREEN);
+                                setData(i,j,AlgoVisHelper.BLUEpath);
                             }
                         } else if(curPlayer == Player.BLUE && this.getSide() == Side.Right){
                             if(pathRight[i][j]){
-                                setData(i,j,Color.FORESTGREEN);
+                                setData(i,j,AlgoVisHelper.BLUEpath);
                             }
                         }
                     }
@@ -206,14 +206,14 @@ public class Algorithm {
                 for (int j = 0; j < data.GetCol(); j++) {
                     if(data.getMaze(i,j) != MazeData.StartPoint) {
                         if (path[i][j]) {
-                            setData(i, j, Color.WHITE);
+                            setData(i, j, Color.web("#eeeeee"));
                         }
                         path[i][j] = false;
                     }
                 }
             }
-            setData(leftBlock.prevBlock(Side.Left).getX(), leftBlock.prevBlock(Side.Left).getY(), Color.WHITE);
-            setData(rightBlock.prevBlock(Side.Right).getX(), rightBlock.prevBlock(Side.Right).getY(), Color.WHITE);
+            setData(leftBlock.prevBlock(Side.Left).getX(), leftBlock.prevBlock(Side.Left).getY(), Color.web("#eeeeee"));
+            setData(rightBlock.prevBlock(Side.Right).getX(), rightBlock.prevBlock(Side.Right).getY(), Color.web("#eeeeee"));
         }
 
     }

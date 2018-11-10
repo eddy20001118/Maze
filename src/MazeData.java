@@ -11,7 +11,7 @@ public class MazeData {
     public static final char StartPoint = 'S';
     public boolean[][] visited;
     private int BlueBlockNumbers; //初始蓝色方块的数量
-    private int[] BlueScore = {1000, 100, 100, 100, 100, 100, 100, 1000};
+    private int[] BlueScore = {1000, 40, 40, 40, 40, 40, 40, 1000};
     private int row, col; //行(N)，列(M)
     private int enteranceX = 0, enteranceY = 0;
     private int exitX = 9, exitY = 1;
