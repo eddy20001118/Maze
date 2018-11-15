@@ -5,14 +5,18 @@
 	-fx-font-size: 17px;
 }
 
+.button-raised-over {
+	-fx-background-color: #008074;
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-font-size: 17px;
+}
+
 .text-field {
 	 -fx-background-color: #ffffff;
      -jfx-focus-color: #009688;
      -jfx-unfocus-color: #009688;
-     -fx-background-radius: 2.0;
-     -fx-padding: 0.5em 0.5em 0.5em 0.1em;
-     -fx-border-width: 0 0 2 0;
-     -fx-highlight-fill: rgb(94.0, 203.0, 234.0);
+     -fx-padding: 0.5em 0.5em 0.5em 0.5em;
 }
 
 .pane-field {

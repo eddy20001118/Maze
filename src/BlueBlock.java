@@ -7,8 +7,7 @@ public class BlueBlock extends Position{
     private int position;
     public static MazeData data = AlgoFrame.data;
     public static GridPane pane = AlgoFrame.pane;
-    private int BlueBlockNumbers = data.getBlockNumbers();
-    public static int curBlockNumber = data.getBlockNumbers();
+    private int curBlockNumber = data.getBlockNumbers();
     public static int[] BlueScore = data.getBlueScore();
 
     public int[] getBlueScore() {
