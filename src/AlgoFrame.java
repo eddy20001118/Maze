@@ -24,7 +24,7 @@ public class AlgoFrame extends Application {
     public void start(Stage primaryStage) throws Exception {
         double SceneWidth =  data.GetRow() * (AlgoVisHelper.blockSide +0.5) - 2;
         double SceneHeight = data.GetCol() * (AlgoVisHelper.blockSide +1) + 85;
-        pane.setStyle("-fx-background-color: white;");
+        pane.setStyle("-fx-background-color: white");
         bp.setPadding(new Insets(10,5,10,5));
         bp.setLeft(AlgoVisHelper.setScore(0)); //刷新分数
         bp.setRight(AlgoVisHelper.setScore(0));
