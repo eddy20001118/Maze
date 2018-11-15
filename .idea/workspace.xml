@@ -4,25 +4,7 @@
     <bookmark url="file://$PROJECT_DIR$/src/AlgoFrame.java" line="12" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0adf0e48-0155-47b3-81e1-ebb6640e4098" name="Default Changelist" comment="First Commit">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Maze.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Maze.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/AlgoFrame$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/AlgoFrame.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/AlgoVisHelper.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/Algorithm$Player.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/Algorithm$Side.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/Algorithm$cal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/Algorithm.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/BlueBlock.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/MazeData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/Position.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Maze/res/components.css" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Maze/res/components.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AlgoFrame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AlgoFrame.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/AlgoVisHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/AlgoVisHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BlueBlock.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/BlueBlock.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/res/components.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/res/components.css" afterDir="false" />
-    </list>
+    <list default="true" id="0adf0e48-0155-47b3-81e1-ebb6640e4098" name="Default Changelist" comment="First Commit" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -143,8 +125,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/AlgoFrame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="171">
-              <caret line="46" column="50" selection-start-line="46" selection-start-column="50" selection-end-line="46" selection-end-column="50" />
+            <state relative-caret-position="295">
+              <caret line="26" column="51" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -475,6 +457,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/res/components.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="62">
+          <caret line="2" column="25" lean-forward="true" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Algorithm.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1209">
@@ -490,16 +482,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/res/components.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="2" column="25" lean-forward="true" selection-start-line="2" selection-start-column="25" selection-end-line="2" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/AlgoVisHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
@@ -509,8 +491,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/AlgoFrame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="46" column="50" selection-start-line="46" selection-start-column="50" selection-end-line="46" selection-end-column="50" />
+        <state relative-caret-position="295">
+          <caret line="26" column="51" selection-start-line="26" selection-start-column="23" selection-end-line="26" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
