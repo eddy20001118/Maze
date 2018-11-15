@@ -45,11 +45,9 @@ public class AlgoFrame extends Application {
     public void CreateNodes() {
         JFXButton next = new JFXButton("Go!");
         next.getStyleClass().add("button-raised");
-        
         next.setOnMouseEntered(event -> {
             next.setStyle("-fx-background-color: #008074");
         });
-
         next.setOnMouseExited(event -> {
             next.setStyle("-fx-background-color: #009688");
         });
